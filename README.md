@@ -50,7 +50,10 @@ Voir par ex: https://www.theguardian.com/news/datablog/2012/oct/05/beatles-chart
 - material UI - A voir
 - https://d3js.org/ - Pour faire des graphs
 - https://www.heroku.com/ - Pour l'hébergement
+- PM2 - A voir
 
+
+https://blog.heroku.com/deploying-react-with-zero-configuration
 
 
 ## Installation
