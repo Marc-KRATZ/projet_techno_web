@@ -9,30 +9,54 @@ import {
     Link
   } from "react-router-dom";
 
+import axios from 'axios';
+
+
 import Home from './Home';
-import Artist from './Artist'
+import Artist from './Artist';
+import Completion from './Completion';
 
 class Navigation extends Component{
     constructor(props){
         super(props)
         this.state = {
-            search : ""
+            search : "",
+            completion: []
         }
     }
-  
-    componentDidMount() {
 
+    componentDidMount() {
+      /*fetch("https://wasabi.i3s.unice.fr/search/fulltext/"+this.state.search)
+        .then(response => response.json())
+        .then(data => this.setState({ completion: data.data }))*/
     }
 
     handleChangeSearch = event => {
         console.log(event.target.value);
-        this.setState({ 
+        this.setState({
             search: event.target.value
         })
+        axios.get("https://wasabi.i3s.unice.fr/search/fulltext/"+event.target.value)
+          .then(res => {
+              this.setState({ completion: res.data });
+          })
+        console.log(this.state.completion)
     }
 
 
     render(){
+
+      let comp = (<div>)
+      if (this.state.completion.length != 0){
+        for(var i=0;i<this.state.completion.length-1;i++){
+          if (this.state.completion[i].title=null){
+            comp.push(<a>{this.state.completion[0].name}</a>)
+          }
+        }
+        //comp = (<a>{this.state.completion[0].name}</a>)
+      }
+      comp.push(</div>)
+
         return (
         <Router>
             <AppBar position="static">
@@ -41,7 +65,7 @@ class Navigation extends Component{
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/artist/:name">Artist</Link>
+              <Link to="/artist/test">Artist</Link>
             </li>
             <li>
               <Link to="/users">Users</Link>
@@ -53,11 +77,15 @@ class Navigation extends Component{
               onChange={this.handleChangeSearch}
               inputProps={{ 'aria-label': 'search' }}
             />
+            <div id="suggestion">
+              {comp}
+            </div>
+
 
           </div>
             </ul>
             {this.state.search}
-            
+
           </AppBar>
 
           <Switch>
@@ -72,14 +100,14 @@ class Navigation extends Component{
           </Route>
         </Switch>
         </Router>
-        
+
         )
     }
 }
 
 export default Navigation
 
-/** 
+/**
 
 
 export default function App() {
@@ -117,7 +145,3 @@ export default function App() {
   );
 }
 **/
-
-
-
-
