@@ -40,22 +40,36 @@ class Navigation extends Component{
           .then(res => {
               this.setState({ completion: res.data });
           })
-        console.log(this.state.completion)
     }
 
+    /**suggestion = () => {
+      const comp = []
+      comp.push(<div>)
+      if (this.state.completion.length != 0){
+        comp.push("test")
+      }
+
+
+      comp.push(</div>)
+      return comp
+    }**/
 
     render(){
 
-      let comp = (<div>)
-      if (this.state.completion.length != 0){
-        for(var i=0;i<this.state.completion.length-1;i++){
-          if (this.state.completion[i].title=null){
-            comp.push(<a>{this.state.completion[0].name}</a>)
+      const suggestion = []
+      
+      console.log(this.state.completion)
+
+      if(this.state.completion.length!=0){
+        for (const [index, value] of this.state.completion.entries()) {
+          if(value.title!=null){
+            suggestion.push(<li key={index}>{value.title}</li>)
+          }else{
+            suggestion.push(<li key={index}>{value.name}</li>)
           }
         }
-        //comp = (<a>{this.state.completion[0].name}</a>)
       }
-      comp.push(</div>)
+
 
         return (
         <Router>
@@ -66,7 +80,7 @@ class Navigation extends Component{
             </li>
             <li>
               <Link to="/artist/test">Artist</Link>
-            </li>
+            </li>l
             <li>
               <Link to="/users">Users</Link>
             </li>
@@ -78,7 +92,7 @@ class Navigation extends Component{
               inputProps={{ 'aria-label': 'search' }}
             />
             <div id="suggestion">
-              {comp}
+              {suggestion}
             </div>
 
 
