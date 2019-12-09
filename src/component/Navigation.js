@@ -14,25 +14,31 @@ import axios from 'axios';
 
 import Home from './Home';
 import Artist from './Artist';
-import Completion from './Completion';
 
 class Navigation extends Component{
     constructor(props){
         super(props)
         this.state = {
             search : "",
-            completion: []
+            completion: [],
+            focus: false
         }
     }
 
     componentDidMount() {
-      /*fetch("https://wasabi.i3s.unice.fr/search/fulltext/"+this.state.search)
-        .then(response => response.json())
-        .then(data => this.setState({ completion: data.data }))*/
+      
     }
 
     focus = () => (
-        console.log("focus")
+      this.setState({ 
+        focus: true
+      })
+    )
+
+    blur = () => (
+      this.setState({ 
+        focus: false
+      })
     )
 
     handleChangeSearch = event => {
@@ -48,9 +54,9 @@ class Navigation extends Component{
         } else {
             axios.get("https://wasabi.i3s.unice.fr/search/fulltext/"+event.target.value)
             .then(res => {  
-                    this.setState({ 
-                        completion: res.data 
-                    });
+                this.setState({ 
+                    completion: res.data 
+                });
             })
         }
 
@@ -75,16 +81,21 @@ class Navigation extends Component{
       console.log(this.state.completion)
 
       console.log("longueur" + this.state.completion.length + " type : "+ typeof(this.state.completion.length))
-      if(this.state.completion.length!=="0"){
-          console.log(this.state.completion.length)
-        for (const [index, value] of this.state.completion.entries()) {
-          if(value.title!=null){
-            suggestion.push(<li key={index}>{value.title}</li>)
-          }else{
-            suggestion.push(<li key={index}>{value.name}</li>)
+
+      if(this.state.focus == true){
+        if(this.state.completion.length!=="0"){
+            console.log(this.state.completion.length)
+          for (const [index, value] of this.state.completion.entries()) {
+            if(value.title!=null){
+              suggestion.push(<li key={index}>{value.title}</li>)
+            }else{
+              suggestion.push(<li key={index}>{value.name}</li>)
+            }
           }
         }
       }
+
+      //https://material-ui.com/components/autocomplete/#google-maps-place
 
 
         return (
@@ -106,6 +117,7 @@ class Navigation extends Component{
               placeholder="Search…"
               onChange={this.handleChangeSearch}
               onFocus={this.focus}
+              onBlur={this.blur}
               inputProps={{ 'aria-label': 'search' }}
             />
             <div id="suggestion">
@@ -137,42 +149,3 @@ class Navigation extends Component{
 }
 
 export default Navigation
-
-/**
-
-
-export default function App() {
-  return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
-
-
-        <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
-  );
-}
-**/
