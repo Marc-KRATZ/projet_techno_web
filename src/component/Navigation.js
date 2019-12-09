@@ -31,15 +31,29 @@ class Navigation extends Component{
         .then(data => this.setState({ completion: data.data }))*/
     }
 
+    focus = () => (
+        console.log("focus")
+    )
+
     handleChangeSearch = event => {
-        console.log(event.target.value);
+        console.log("entry: "+event.target.value);
         this.setState({
             search: event.target.value
         })
-        axios.get("https://wasabi.i3s.unice.fr/search/fulltext/"+event.target.value)
-          .then(res => {
-              this.setState({ completion: res.data });
-          })
+        console.log("test: "+event.target)
+        if(event.target.value===""){
+            this.setState({
+                completion: []
+            })
+        } else {
+            axios.get("https://wasabi.i3s.unice.fr/search/fulltext/"+event.target.value)
+            .then(res => {  
+                    this.setState({ 
+                        completion: res.data 
+                    });
+            })
+        }
+
     }
 
     /**suggestion = () => {
@@ -60,7 +74,9 @@ class Navigation extends Component{
       
       console.log(this.state.completion)
 
-      if(this.state.completion.length!=0){
+      console.log("longueur" + this.state.completion.length + " type : "+ typeof(this.state.completion.length))
+      if(this.state.completion.length!=="0"){
+          console.log(this.state.completion.length)
         for (const [index, value] of this.state.completion.entries()) {
           if(value.title!=null){
             suggestion.push(<li key={index}>{value.title}</li>)
@@ -89,6 +105,7 @@ class Navigation extends Component{
             <InputBase
               placeholder="Search…"
               onChange={this.handleChangeSearch}
+              onFocus={this.focus}
               inputProps={{ 'aria-label': 'search' }}
             />
             <div id="suggestion">
