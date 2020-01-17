@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { AppBar, InputBase, IconButton, Paper } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 
+
+
 import {
     BrowserRouter as Router,
     Switch,
@@ -14,6 +16,8 @@ import axios from 'axios';
 
 import Home from './Home';
 import Artist from './Artist';
+import GoogleMaps from './GoogleMaps';
+import SearchBar from './SearchBar';
 
 class Navigation extends Component{
     constructor(props){
@@ -123,6 +127,8 @@ class Navigation extends Component{
             <div id="suggestion">
               {suggestion}
             </div>
+            <GoogleMaps/>
+            <SearchBar/>
 
 
           </div>

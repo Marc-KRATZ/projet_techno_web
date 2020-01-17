@@ -45,11 +45,12 @@ On pourra ajouter à la recherche :
 Voir par ex: https://www.theguardian.com/news/datablog/2012/oct/05/beatles-charts-infographics ou encore https://time.com/music-ranking/
 
 ## Technologies utilisées
-- redux - A voir
 - reactjs
-- material UI - A voir
-- https://d3js.org/ - Pour faire des graphs
+- material UI
+- D3 React
 - https://www.heroku.com/ - Pour l'hébergement
+
+## Autre techno
 - PM2 - A voir
 
 
