@@ -127,7 +127,6 @@ class Navigation extends Component{
             <div id="suggestion">
               {suggestion}
             </div>
-            <GoogleMaps/>
             <SearchBar/>
 
 

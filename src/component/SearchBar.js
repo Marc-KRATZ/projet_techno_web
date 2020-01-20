@@ -1,26 +1,78 @@
 import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core'
+import TextField from '@material-ui/core/TextField';
+import parse from 'autosuggest-highlight/parse';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
-export default function SearchBar(){
 
-handleChange = event => {
-    console.log(event.taget.value)
+class SearchBar extends React.Component {
+
+  constructor(props){
+    super(props)
+    this.state = {
+        search : "",
+        completion: [],
+        focus: false,
+    }
+  }
+
+sleep(delay = 0) {
+  return new Promise(resolve => {
+    setTimeout(resolve, delay);
+  });
 }
 
-return (
-    <Autocomplete
-        id="search-artists-songs"
-        style={{ width: 400 }}
-        renderInput={params => (
-            <TextField
-              {...params}
-              label="Add a location"
-              variant="outlined"
-              fullWidth
-              onChange={handleChange}
-            />
-          )}
-    />
-    )
+  async handleChange (event) {
+    console.log(event.target.value)
+    //(async () => {
+      const response = await fetch("https://wasabi.i3s.unice.fr/search/fulltext/"+event.target.value)
+      await this.sleep(1e3);
+      const responses = await response.json();
+      responses.map((response,index) => (console.log(index+" "+response)))
+      console.log(responses)
+      this.setState({completion: responses})
+      
+    //})();
+
+    
+  }
+
+  render(){
+    const {completion} = this.state;
+    return (
+      <Autocomplete
+          id="search-artists-songs"
+          style={{ width: 400 }}
+          options={completion}
+          renderInput={params => (
+              <TextField
+                {...params}
+                label="Find an artist or song"
+                variant="outlined"
+                fullWidth
+                onChange={e=>{this.handleChange(e)}}
+              />
+            )}
+            renderOption={optionsss=> {
+      
+              return (
+                <Grid container alignItems="center">
+                  <Grid item xs>
+                    {completion.map((part, index) => (
+                      <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+                        {part.name}
+                      </span>
+                    ))}
+                  </Grid>
+                </Grid>
+              );
+            }}
+      />
+    )      
+  }
+
+  
 }
+
+export default SearchBar;
