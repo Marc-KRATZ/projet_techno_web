@@ -11,7 +11,7 @@ function sleep(delay = 0) {
   });
 }
 
-export default function Asynchronous() {
+export default function Test() {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
@@ -24,12 +24,12 @@ export default function Asynchronous() {
     }
 
     (async () => {
-      const response = await fetch('https://country.register.gov.uk/records.json?page-size=5000');
+      const response = await fetch('https://wasabi.i3s.unice.fr/search/fulltext/test');
       await sleep(1e3); // For demo purposes.
       const countries = await response.json();
 
       if (active) {
-        setOptions(Object.keys(countries).map(key => countries[key].item[0]));
+        setOptions(Object.keys(countries).map(key => countries[0][key].name));
       }
     })();
 
@@ -55,8 +55,9 @@ export default function Asynchronous() {
       onClose={() => {
         setOpen(false);
       }}
+      filterOptions={x=>x}
       getOptionSelected={(option, value) => option.name === value.name}
-      getOptionLabel={option => option.name}
+      //getOptionLabel={option => option.name}
       options={options}
       loading={loading}
       renderInput={params => (

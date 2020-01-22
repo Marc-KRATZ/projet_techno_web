@@ -30,17 +30,17 @@ class Navigation extends Component{
     }
 
     componentDidMount() {
-      
+
     }
 
     focus = () => (
-      this.setState({ 
+      this.setState({
         focus: true
       })
     )
 
     blur = () => (
-      this.setState({ 
+      this.setState({
         focus: false
       })
     )
@@ -57,9 +57,9 @@ class Navigation extends Component{
             })
         } else {
             axios.get("https://wasabi.i3s.unice.fr/search/fulltext/"+event.target.value)
-            .then(res => {  
-                this.setState({ 
-                    completion: res.data 
+            .then(res => {
+                this.setState({
+                    completion: res.data
                 });
             })
         }
@@ -81,7 +81,7 @@ class Navigation extends Component{
     render(){
 
       const suggestion = []
-      
+
       console.log(this.state.completion)
 
       console.log("longueur" + this.state.completion.length + " type : "+ typeof(this.state.completion.length))
@@ -111,7 +111,7 @@ class Navigation extends Component{
             </li>
             <li>
               <Link to="/artist/test">Artist</Link>
-            </li>l
+            </li>
             <li>
               <Link to="/users">Users</Link>
             </li>
@@ -128,6 +128,7 @@ class Navigation extends Component{
               {suggestion}
             </div>
             <SearchBar/>
+
 
 
           </div>

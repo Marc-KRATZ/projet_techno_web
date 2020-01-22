@@ -4,6 +4,18 @@ import TextField from '@material-ui/core/TextField';
 import parse from 'autosuggest-highlight/parse';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
+
+import ListItem from '@material-ui/core/ListItem';
+
+function ListItemLink(props) {
+  return <ListItem button component="a" {...props} />;
+}
 
 
 class SearchBar extends React.Component {
@@ -32,10 +44,10 @@ sleep(delay = 0) {
       responses.map((response,index) => (console.log(index+" "+response)))
       console.log(responses)
       this.setState({completion: responses})
-      
+
     //})();
 
-    
+
   }
 
   render(){
@@ -44,34 +56,43 @@ sleep(delay = 0) {
       <Autocomplete
           id="search-artists-songs"
           style={{ width: 400 }}
+          getOptionLabel={option => (option.title != null ? option.title : option.name)}
           filterOptions = {x=>x}
           options={completion}
+          autoComplete
+          includeInputInList
+          freeSolo
+          disableOpenOnFocus
           renderInput={params => (
               <TextField
                 {...params}
-                label="Find an artist or song"
-                variant="outlined"
+                select
+                label="Select"
                 fullWidth
                 onChange={e=>{this.handleChange(e)}}
               />
             )}
             renderOption={option=> {
-      
-              return (
-                <Grid container alignItems="center">
+
+              return (<Link to="/Artist/Song/">
                   {option.title != null ?
-                    <a href={"/Artist/Song/"+option.title}><Grid item xs>{option.title}</Grid></a>
+                    //<Grid container alignItems="center">
+                      <Grid item>{option.title}</Grid>
+                      //</Grid>
                     :
-                    <a href={"/Artist/"+option.name}><Grid item xs>{option.name}</Grid></a>
+                    //<Grid container alignItems="center">
+                    <Grid item>{option.name}</Grid>
+                    //</Grid>
+
                   }
-                </Grid>
+                  </Link>
               );
             }}
       />
-    )      
+    )
   }
- 
-  
+
+
 }
 
 export default SearchBar;
