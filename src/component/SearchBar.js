@@ -44,6 +44,7 @@ sleep(delay = 0) {
       <Autocomplete
           id="search-artists-songs"
           style={{ width: 400 }}
+          filterOptions = {x=>x}
           options={completion}
           renderInput={params => (
               <TextField
@@ -54,24 +55,22 @@ sleep(delay = 0) {
                 onChange={e=>{this.handleChange(e)}}
               />
             )}
-            renderOption={optionsss=> {
+            renderOption={option=> {
       
               return (
                 <Grid container alignItems="center">
-                  <Grid item xs>
-                    {completion.map((part, index) => (
-                      <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                        {part.name}
-                      </span>
-                    ))}
-                  </Grid>
+                  {option.title != null ?
+                    <a href={"/Artist/Song/"+option.title}><Grid item xs>{option.title}</Grid></a>
+                    :
+                    <a href={"/Artist/"+option.name}><Grid item xs>{option.name}</Grid></a>
+                  }
                 </Grid>
               );
             }}
       />
     )      
   }
-
+ 
   
 }
 
