@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { AppBar, InputBase, IconButton, Paper } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
+import Grid from '@material-ui/core/Grid';
 
-
-
+import TextField from '@material-ui/core/TextField';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Link
   } from "react-router-dom";
+import PropTypes from 'prop-types';
 
 import axios from 'axios';
 
@@ -88,12 +89,13 @@ class Navigation extends Component{
 
       if(this.state.focus == true){
         if(this.state.completion.length!=="0"){
+          suggestion.push('<Grid container alignItems="center">')
             console.log(this.state.completion.length)
           for (const [index, value] of this.state.completion.entries()) {
             if(value.title!=null){
-              suggestion.push(<li key={index}>{value.title}</li>)
+              suggestion.push(<Grid key={index}>{value.title}</Grid>)
             }else{
-              suggestion.push(<li key={index}>{value.name}</li>)
+              suggestion.push(<Grid key={index}>{value.name}</Grid>)
             }
           }
         }
@@ -117,7 +119,7 @@ class Navigation extends Component{
             </li>
             <div>
 
-            <InputBase
+            <TextField
               placeholder="Search…"
               onChange={this.handleChangeSearch}
               onFocus={this.focus}
@@ -135,14 +137,15 @@ class Navigation extends Component{
             </ul>
             {this.state.search}
 
+
           </AppBar>
 
           <Switch>
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/artist/:name">
-            <Artist />
+          <Route path="/artist/:name" component={}>
+            <Artist name=params.name/>
           </Route>
           <Route path="/users">
             <Home />
