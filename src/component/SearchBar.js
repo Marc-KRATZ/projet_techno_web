@@ -6,9 +6,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { makeStyles } from '@material-ui/core/styles';
 
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
-
+import { withStyles } from '@material-ui/styles';
 
 import {
     BrowserRouter as Router,
@@ -33,6 +34,20 @@ import * as AutosuggestHighlightParse from 'autosuggest-highlight/parse';
 import Song from './Song';
 import Artist from './Artist';
 
+
+const styles = theme => ({
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: 'white',
+    position: 'absolute',
+    overflow: 'auto',
+    maxHeight: 300,
+  },
+});
+
+
+
 function ListItemLink(props) {
   const { icon, primary, to, picture } = props;
   const avatar = []
@@ -49,7 +64,7 @@ function ListItemLink(props) {
 
   return (
     <li>
-      <ListItem button component={renderLink}>
+      <ListItem button >
         <ListItemAvatar>
           {avatar}
         </ListItemAvatar>
@@ -64,6 +79,7 @@ ListItemLink.propTypes = {
   primary: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
 };
+
 
 
 class SearchBar extends React.Component {
@@ -96,6 +112,32 @@ class SearchBar extends React.Component {
 
   };
 
+  ListItemLink = (to,primary,picture) => {
+    //const { icon, primary, to, picture } = props;
+    const avatar = []
+    /*const renderLink = React.useMemo(
+      () => React.forwardRef((itemProps, ref) => <RouterLink to={to} ref={ref} {...itemProps} />),
+      [to],
+    );*/
+  
+    if(picture !== ""){
+      avatar.push(<Avatar src={picture}/>)
+    } else {
+      avatar.push(<Avatar><MusicNoteIcon/></Avatar>)
+    }
+  
+    const coucou = "coucou"
+    return (
+      <li data-letter={primary} onClick={(e) => this.handleClick(e)}>
+        <ListItem button >
+          <ListItemAvatar>
+            {avatar}
+          </ListItemAvatar>
+          <ListItemText primary={primary} />
+        </ListItem>
+      </li>
+    );
+  }
 
   renderOption = () => {
 
@@ -104,9 +146,9 @@ class SearchBar extends React.Component {
         console.log(this.state.suggestions.length)
       for (const [index, value] of this.state.suggestions.entries()) {
         if(value.title!=null){
-          suggestion.push(<ListItemLink to="/Song/" primary={value.title} picture={value.picture} />)
+          suggestion.push(this.ListItemLink("/Song/",value.title,value.picture))
         }else{
-          suggestion.push(<ListItemLink to="/Artist/hello" primary={value.name} picture={value.picture} />)
+          suggestion.push(this.ListItemLink("/Artist/hello",value.name,value.picture))
         }
       }
     }
@@ -120,32 +162,47 @@ class SearchBar extends React.Component {
     })
   )
 
-  blur = () => (
-    this.setState({
-      focus: false
-    })
+  handleClick = (e) => (
+    console.log(e.target.dataset)
   )
 
   render(){
     const { value, suggestions, focus } = this.state;
+    const { classes } = this.props
 
+    const liste = []
+    
+    if((suggestions.length !== 0) && focus){
+      liste.push(
+        <List className={classes.root} aria-label="secondary folders">
+          {this.renderOption()}
+        </List>
+      )
+    }else {
+      liste.push(<div></div>)
+    }
+    console.log(suggestions)
     return (
-      <div>
+      <Grid item xs={2}>
         <TextField
           placeholder="Search…"
+          fullWidth
           value={value}
           onChange={this.handleChange}
           inputProps={{ 'aria-label': 'search'}}
           onFocus={this.focus}
+          onBlur={this.blur}
         />
-        <List aria-label="secondary folders">
-          {focus ? this.renderOption():""}
-        </List>
-      </div>
+        {liste}
+      </Grid>
     );
 
   }
 
 }
 
-export default SearchBar;
+SearchBar.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(SearchBar);

@@ -144,8 +144,8 @@ class Navigation extends Component{
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/artist/:name" component={}>
-            <Artist name=params.name/>
+          <Route path="/artist/:name">
+            <Artist />
           </Route>
           <Route path="/users">
             <Home />
