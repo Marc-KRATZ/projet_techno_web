@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 class Song extends Component{
     constructor(props){
@@ -15,4 +16,4 @@ class Song extends Component{
     }
 }
 
-export default Song
+export default withRouter(Song)

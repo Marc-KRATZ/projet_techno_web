@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { AppBar, InputBase, IconButton, Paper } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
 
 import TextField from '@material-ui/core/TextField';
 import {
@@ -19,6 +21,7 @@ import Home from './Home';
 import Artist from './Artist';
 import GoogleMaps from './GoogleMaps';
 import SearchBar from './SearchBar';
+import Song from './Song';
 
 class Navigation extends Component{
     constructor(props){
@@ -47,11 +50,11 @@ class Navigation extends Component{
     )
 
     handleChangeSearch = event => {
-        console.log("entry: "+event.target.value);
+        //console.log("entry: "+event.target.value);
         this.setState({
             search: event.target.value
         })
-        console.log("test: "+event.target)
+        //console.log("test: "+event.target)
         if(event.target.value===""){
             this.setState({
                 completion: []
@@ -83,14 +86,14 @@ class Navigation extends Component{
 
       const suggestion = []
 
-      console.log(this.state.completion)
+      //console.log(this.state.completion)
 
-      console.log("longueur" + this.state.completion.length + " type : "+ typeof(this.state.completion.length))
+      //console.log("longueur" + this.state.completion.length + " type : "+ typeof(this.state.completion.length))
 
       if(this.state.focus == true){
         if(this.state.completion.length!=="0"){
           suggestion.push('<Grid container alignItems="center">')
-            console.log(this.state.completion.length)
+            //console.log(this.state.completion.length)
           for (const [index, value] of this.state.completion.entries()) {
             if(value.title!=null){
               suggestion.push(<Grid key={index}>{value.title}</Grid>)
@@ -139,18 +142,28 @@ class Navigation extends Component{
 
 
           </AppBar>
-
+          
+          <Container maxWidth="lg">
+          <Paper square>
           <Switch>
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/artist/:name">
-            <Artist />
+          <Route exact path="/artist/:name"> 
+            <Artist/>
+          </Route>
+            
+
+          <Route path="/song/:name">
+            <Song />
           </Route>
           <Route path="/users">
             <Home />
           </Route>
         </Switch>
+        </Paper>
+        </Container>
+        
         </Router>
 
         )

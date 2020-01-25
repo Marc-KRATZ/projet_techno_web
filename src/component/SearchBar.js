@@ -15,7 +15,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link as RouterLink
+    Link
   } from "react-router-dom";
 
   import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -37,8 +37,9 @@ import Artist from './Artist';
 
 const styles = theme => ({
   root: {
-    width: '100%',
-    maxWidth: 360,
+    width:'100%',
+    
+    color:'black',
     backgroundColor: 'white',
     position: 'absolute',
     overflow: 'auto',
@@ -47,7 +48,7 @@ const styles = theme => ({
 });
 
 
-
+/*
 function ListItemLink(props) {
   const { icon, primary, to, picture } = props;
   const avatar = []
@@ -78,7 +79,7 @@ ListItemLink.propTypes = {
   icon: PropTypes.element,
   primary: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
-};
+};*/
 
 
 
@@ -97,7 +98,7 @@ class SearchBar extends React.Component {
     this.setState({value: event.target.value});
     if(event.target.value.length !== 0 ){
       (async () => {
-        const response = await fetch('https://wasabi.i3s.unice.fr/search/fulltext/'+event.target.value);
+        const response = await fetch('https://wasabi.i3s.unice.fr/search/fulltext/'+encodeURIComponent(event.target.value));
         //await sleep(1e3); // For demo purposes.
         const data = await response.json();
         this.setState({
@@ -128,13 +129,15 @@ class SearchBar extends React.Component {
   
     const coucou = "coucou"
     return (
-      <li data-letter={primary} onClick={(e) => this.handleClick(e)}>
+      <li  onClick={(e) => this.handleClick(e,primary)} data-value={primary}>
+        <Link to={to}>
         <ListItem button >
           <ListItemAvatar>
             {avatar}
           </ListItemAvatar>
           <ListItemText primary={primary} />
         </ListItem>
+        </Link>
       </li>
     );
   }
@@ -143,12 +146,12 @@ class SearchBar extends React.Component {
 
     const suggestion = []
     if(this.state.suggestions.length!=="0"){
-        console.log(this.state.suggestions.length)
+        //console.log(this.state.suggestions.length)
       for (const [index, value] of this.state.suggestions.entries()) {
         if(value.title!=null){
-          suggestion.push(this.ListItemLink("/Song/",value.title,value.picture))
+          suggestion.push(this.ListItemLink("/Song/"+encodeURIComponent(value.title),value.title,value.picture))
         }else{
-          suggestion.push(this.ListItemLink("/Artist/hello",value.name,value.picture))
+          suggestion.push(this.ListItemLink("/Artist/"+encodeURIComponent(value.name),value.name,value.picture))
         }
       }
     }
@@ -156,15 +159,19 @@ class SearchBar extends React.Component {
     return suggestion
   }
 
-  focus = () => (
+  focus = () => {
     this.setState({
       focus: true
     })
-  )
+  }
 
-  handleClick = (e) => (
-    console.log(e.target.dataset)
-  )
+  handleClick = (e) => {
+    this.setState({
+      value: e.currentTarget.dataset.value,
+      focus: false,
+      suggestions: []
+    })
+  }
 
   render(){
     const { value, suggestions, focus } = this.state;
@@ -174,14 +181,14 @@ class SearchBar extends React.Component {
     
     if((suggestions.length !== 0) && focus){
       liste.push(
-        <List className={classes.root} aria-label="secondary folders">
+        <List className={classes.root} fullWidth aria-label="secondary folders">
           {this.renderOption()}
         </List>
       )
     }else {
       liste.push(<div></div>)
     }
-    console.log(suggestions)
+    //console.log(suggestions)
     return (
       <Grid item xs={2}>
         <TextField
@@ -191,7 +198,6 @@ class SearchBar extends React.Component {
           onChange={this.handleChange}
           inputProps={{ 'aria-label': 'search'}}
           onFocus={this.focus}
-          onBlur={this.blur}
         />
         {liste}
       </Grid>
