@@ -114,24 +114,10 @@ class Navigation extends Component{
             <li>
               <Link to="/">Home</Link>
             </li>
-            <li>
-              <Link to="/artist/test">Artist</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
+            
             <div>
 
-            <TextField
-              placeholder="Search…"
-              onChange={this.handleChangeSearch}
-              onFocus={this.focus}
-              onBlur={this.blur}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-            <div id="suggestion">
-              {suggestion}
-            </div>
+            
             <SearchBar/>
 
 
