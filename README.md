@@ -47,14 +47,14 @@ Voir par ex: https://www.theguardian.com/news/datablog/2012/oct/05/beatles-chart
 ## Technologies utilisées
 - reactjs
 - material UI
-- D3 React
+- react-google-charts
 - https://www.heroku.com/ - Pour l'hébergement
 
-## Autre techno
-- PM2 - A voir
 
 
 https://blog.heroku.com/deploying-react-with-zero-configuration
 
 
 ## Installation
+
+npm install - npm start
